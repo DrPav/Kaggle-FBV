@@ -48,3 +48,7 @@ print(b-a)
 # 1,000 takes 14 seconds
 # 10,000 takes 149 seconds
 # Estimate that all 8 Millio will take 33 hours - doing 250,000 an hour
+
+#Very slow
+#Export the data sets and try in Python
+write.csv(places, "data/01_places.csv")
