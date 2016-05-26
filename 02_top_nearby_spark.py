@@ -13,7 +13,7 @@ conf = SparkConf().setMaster("local[*]").setAppName("FriendsByAge")
 sc = SparkContext(conf = conf)
 
 places_filepath = "data/01_places.csv"
-test_set_filepath = "data/01_test_10kobs.csv"
+test_set_filepath = "data/01_test_860kobs.csv"
 
 distance = 2
 x_range = 0.77*distance
@@ -62,7 +62,8 @@ time_elapsed = time2 - time1
 print(time_elapsed)
 #Calculation took 29 seconds
 #5x faster than r
-f = open('data/02_output.csv', 'w')
+#200k took 10 minutes
+f = open('data/02_output_full.csv', 'w')
 for row in top_3_out:
     row_id, top_places = row
     s = (row_id + "," + 
