@@ -34,12 +34,12 @@ return(top_3$place_id)
 }
 
 test_set = fread("data/test.csv")
-test_set_small = test_set[1:10000,] %>% select(row_id, x,y) %>% as.matrix()
+test_set_small = test_set[1:10000,] %>% select(row_id, x,y)
 
 print("Start")
 a = Sys.time()
 print(a)
-results = apply(test_set_small, 1, function(r) getTop3(r['x'],r['y'])) %>% t()
+results = apply(test_set_small %>% as.matrix(), 1, function(r) getTop3(r['x'],r['y'])) %>% t()
 results_named = cbind(select(test_set_small, row_id), results)
 b = Sys.time()
 print(b)
@@ -51,4 +51,19 @@ print(b-a)
 
 #Very slow
 #Export the data sets and try in Python
-write.csv(places, "data/01_places.csv")
+write.csv(places, "data/01_places.csv", row.names = F)
+write.csv(test_set_small, "data/01_test_10kobs.csv", row.names = F)
+write.csv(select(test_set, row_id, x, y), "data/01_test_860kobs.csv", row.names = F)
+
+test_set1 = test_set[1:200000,] %>% select(row_id, x,y)
+write.csv(select(test_set1, row_id, x, y), "data/01_test_p1.csv", row.names = F)
+
+test_set2 = test_set[200000:400000,] %>% select(row_id, x,y)
+write.csv(select(test_set2, row_id, x, y), "data/01_test_p2.csv", row.names = F)
+
+test_set3 = test_set[400000:600000,] %>% select(row_id, x,y)
+write.csv(select(test_set3, row_id, x, y), "data/01_test_p3.csv", row.names = F)
+
+test_set4 = test_set[600000:8607230, ] %>% select(row_id, x,y)
+write.csv(select(test_set4, row_id, x, y), "data/01_test_p4.csv", row.names = F)
+
