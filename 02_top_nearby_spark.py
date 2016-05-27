@@ -13,7 +13,7 @@ conf = SparkConf().setMaster("local[*]").setAppName("Kaggle1")
 sc = SparkContext(conf = conf)
 
 places_filepath = "data/01_places.csv"
-test_set_filepath = "data/01_test_10kobs.csv"
+test_set_filepath = "data/01_test_grid.csv"
 
 distance = 2
 x_range = 0.77*distance
@@ -66,7 +66,7 @@ print(time_elapsed)
 #Calculation took 29 seconds
 #5x faster than r
 #200k took 10 minutes
-f = open('data/02_output.csv', 'w')
+f = open('data/02_output_grid.csv', 'w')
 for row in top_3_out:
     row_id, top_places = row
     s = (row_id + "," + 

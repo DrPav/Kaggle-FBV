@@ -67,3 +67,23 @@ write.csv(select(test_set3, row_id, x, y), "data/01_test_p3.csv", row.names = F)
 test_set4 = test_set[600000:8607230, ] %>% select(row_id, x,y)
 write.csv(select(test_set4, row_id, x, y), "data/01_test_p4.csv", row.names = F)
 
+#Create an artifical test set of only 100*100 points across space. 
+#Then map the actual test values to closest answer in the artificial space
+x_points = seq(from =0, to = 10, length.out = 100 )
+y_points = seq(from = 0, to = 10, length.out = 1000)
+
+x = numeric()
+y = numeric()
+counter = 1
+for(x_value in x_points){
+  for(y_value in y_points){
+    x[counter] = x_value
+    y[counter] =  y_value
+    counter = counter + 1
+  }
+}
+
+test_artificial = data.frame(id = 1:100000, x, y)
+write.csv(test_artificial, "data/01_test_grid.csv", row.names = F)
+
+
