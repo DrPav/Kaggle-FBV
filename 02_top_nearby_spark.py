@@ -8,12 +8,12 @@ Created on Thu May 26 19:46:22 2016
 from pyspark import SparkConf, SparkContext
 import pandas as pd
 import datetime as dt
-
-conf = SparkConf().setMaster("local[*]").setAppName("FriendsByAge")
+import heapq # used for selecting the top n elements from a list without sorting the whole ist
+conf = SparkConf().setMaster("local[*]").setAppName("Kaggle1")
 sc = SparkContext(conf = conf)
 
 places_filepath = "data/01_places.csv"
-test_set_filepath = "data/01_test_860kobs.csv"
+test_set_filepath = "data/01_test_10kobs.csv"
 
 distance = 2
 x_range = 0.77*distance
@@ -41,8 +41,11 @@ def getTop3(test_row):
     p = places.value
     x_test = (p['x'] < x + x_range) & (p['x'] > x - x_range)
     y_test = (p['y'] < y + y_range) & (p['y'] > y - y_range)
-    p = p[x_test & y_test].sort_values(by = 'count')
-    top3 = p[0:3]['place_id'].tolist()
+    p = p[x_test & y_test]
+    top3_values = heapq.nlargest(3, p['count'])
+    top3_rows = p[p['count'].isin(top3_values)]
+    top3 = top3_rows['place_id'].tolist()
+    top3 = [str(x) for x in top3]
     
     return (row_id, top3)
     
@@ -63,7 +66,7 @@ print(time_elapsed)
 #Calculation took 29 seconds
 #5x faster than r
 #200k took 10 minutes
-f = open('data/02_output_full.csv', 'w')
+f = open('data/02_output.csv', 'w')
 for row in top_3_out:
     row_id, top_places = row
     s = (row_id + "," + 
